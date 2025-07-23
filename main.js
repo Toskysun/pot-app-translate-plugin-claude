@@ -110,7 +110,7 @@ async function translate(text, from, to, options) {
     };
 
     try {
-        // 发送API请求
+        // 发送API请求 - 修复Body格式问题
         const response = await fetch(baseUrl, {
             method: 'POST',
             headers: {
@@ -118,7 +118,10 @@ async function translate(text, from, to, options) {
                 'Authorization': `Bearer ${apiKey}`,
                 'anthropic-version': '2023-06-01'
             },
-            body: JSON.stringify(requestBody)
+            body: {
+                type: 'Json',
+                payload: requestBody
+            }
         });
 
         if (!response.ok) {
