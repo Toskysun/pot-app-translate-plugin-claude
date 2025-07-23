@@ -1,101 +1,93 @@
-# Pot-App 翻译插件模板仓库 (以 [Lingva](https://github.com/TheDavidDelta/lingva-translate) 为例)
+# Pot-App Claude API 翻译插件
 
-### 此仓库为模板仓库，编写插件时可以直接由此仓库创建插件仓库
+这是一个使用Claude API的Pot-App翻译插件，支持多种Claude模型进行高质量翻译。
 
-## 插件编写指南
+## 功能特点
 
-### 1. 插件仓库创建
+- 🤖 支持最新的Claude 4系列模型
+- 🌍 支持45种语言互译
+- ⚡ 智能错误处理和友好提示
+- 🔧 灵活的模型选择
+- 🎯 针对翻译任务优化的提示词
 
-- 以此仓库为模板创建一个新的仓库
-- 仓库名为 `pot-app-translate-plugin-<插件名>`，例如 `pot-app-translate-plugin-lingva`
+## 支持的模型
 
-### 2. 插件信息配置
+### Claude 4 系列（推荐）
+- `claude-opus-4-20250514` - 最强大的翻译质量
+- `claude-sonnet-4-20250514` - 平衡性能和速度
 
-编辑 `info.json` 文件，修改以下字段：
+### Claude 3.7 系列
+- `claude-3-7-sonnet-20250219`
 
-- `id`：插件唯一 id，必须以`plugin`开头，例如 `plugin.com.pot-app.lingva`
-- `homepage`: 插件主页，填写你的仓库地址即可，例如 `https://github.com/pot-app/pot-app-translate-plugin-template`
-- `display`: 插件显示名称，例如 `Lingva`
-- `icon`: 插件图标，例如 `lingva.svg`
-- `needs`: 插件依赖，一个数组，每个依赖为一个对象，包含以下字段：
-  - `key`: 依赖 key，对应该项依赖在配置文件中的名称，例如 `requestPath`
-  - `display`: 依赖显示名称，对应用户显示的名称，例如 `请求地址`
-  - `type`: 组件类型 `input` | `select`
-  - `options`: 选项列表(仅 select 组件需要)，例如 `{"engine_a":"Engina A","engine_b":"Engina B"}`
-- `language`: 插件支持的语言映射，将 pot 的语言代码和插件发送请求时的语言代码一一对应
+### Claude 3.5 系列
+- `claude-3-5-sonnet-20241022`
+- `claude-3-5-haiku-20241022` - 最快速度
 
-### 3. 插件编写
+### Claude 3 系列
+- `claude-3-opus-20240229`
+- `claude-3-haiku-20240307`
 
-编辑 `main.js` 实现 `translate` 函数
+详细的模型选择建议请参考 [SUPPORTED_MODELS.md](SUPPORTED_MODELS.md)
 
-#### 输入参数
+## 安装方法
 
-```javascript
-// config: config map
-// detect: detected source language
-// setResult: function to set result text
-// utils: some tools
-//     http: tauri http module
-//     readBinaryFile: function
-//     readTextFile: function
-//     Database: tauri Database class
-//     CryptoJS: CryptoJS module
-//     cacheDir: cache dir path
-//     pluginDir: current plugin dir 
-//     osType: "Windows_NT" | "Darwin" | "Linux"
-async function translate(text, from, to, options) {
-  const { config, detect, setResult, utils } = options;
-  const { http, readBinaryFile, readTextFile, Database, CryptoJS, run, cacheDir, pluginDir, osType } = utils;
-  const { fetch, Body } = http;
-}
+1. 下载最新的 `plugin.com.pot-app.claude.potext` 文件
+2. 在Pot-App中打开插件管理
+3. 点击"安装插件"并选择下载的文件
+4. 重启Pot-App
+
+## 配置说明
+
+安装插件后，需要在插件设置中配置以下参数：
+
+### API地址
+填写Claude API的地址，通常为：
+```
+https://api.anthropic.com
 ```
 
-#### 返回值
+### API Key
+填写您的Claude API密钥，可以从Anthropic控制台获取。
 
-```javascript
-// 文本翻译直接返回字符串
-return "result";
-// 流式输出使用options中的setResult函数
-setResult("result");
-```
+### 模型
+填写要使用的Claude模型名称，建议使用：
+- 质量优先：`claude-opus-4-20250514`
+- 速度优先：`claude-3-5-haiku-20241022`
+- 平衡选择：`claude-sonnet-4-20250514`
 
-词典返回 json 示例：
+## 使用方法
 
-```json
-{
-  "pronunciations": [
-    {
-      "region": "", // 地区
-      "symbol": "", // 音标
-      "voice": [u8] // 语音字节数组
-    }
-  ],
-  "explanations": [
-    {
-      "trait": "", // 词性
-      "explains": [""] // 释义
-    }
-  ],
-  "associations": [""], // 联想/变形
-  "sentence": [
-    {
-      "source": "", // 原文
-      "target": "" // 译文
-    }
-  ]
-}
-```
+1. 配置好插件参数后
+2. 在Pot-App中选择要翻译的文本
+3. 选择Claude API作为翻译服务
+4. 选择源语言和目标语言
+5. 开始翻译
 
-### 4. 打包 pot 插件
+## 支持的语言
 
-1. 将 `main.js` 文件和 `info.json` 以及图标文件压缩为 zip 文件。
+插件支持以下语言的互译：
+中文（简体/繁体）、英语、日语、韩语、法语、西班牙语、俄语、德语、意大利语、土耳其语、葡萄牙语、越南语、印尼语、泰语、马来语、阿拉伯语、印地语、蒙古语、柬埔寨语、挪威语、波斯语、荷兰语、波兰语、捷克语、斯洛伐克语、匈牙利语、罗马尼亚语、保加利亚语、克罗地亚语、斯洛文尼亚语、爱沙尼亚语、拉脱维亚语、立陶宛语、芬兰语、瑞典语、丹麦语、冰岛语、希腊语、希伯来语、乌尔都语、孟加拉语、泰米尔语、泰卢固语、马拉雅拉姆语、卡纳达语、古吉拉特语、旁遮普语、尼泊尔语、僧伽罗语、缅甸语、老挝语、格鲁吉亚语、阿姆哈拉语、斯瓦希里语、祖鲁语、南非荷兰语
 
-2. 将文件重命名为`<插件id>.potext`，例如`plugin.com.pot-app.lingva.potext`,即可得到 pot 需要的插件。
+## 注意事项
 
-## 自动编译打包
+- 使用插件需要有效的Claude API密钥
+- 不同模型的API调用成本可能不同
+- 请确保您的API密钥有权限访问所选的模型
+- 建议根据翻译需求选择合适的模型
 
-本仓库配置了 Github Actions，可以实现推送后自动编译打包插件。
+## 错误排查
 
-每次将仓库推送到 GitHub 之后 actions 会自动运行，将打包好的插件上传到 artifact，在 actions 页面可以下载
+如果遇到问题，请检查：
+1. API地址是否正确
+2. API Key是否有效
+3. 模型名称是否准确
+4. 网络连接是否正常
+5. API Key是否有权限访问所选模型
 
-每次提交 Tag 之后，actions 会自动运行，将打包好的插件上传到 release，在 release 页面可以下载打包好的插件
+## 许可证
+
+本项目采用与原模板相同的许可证。
+
+## 贡献
+
+欢迎提交Issues和Pull Requests来改进这个插件。
